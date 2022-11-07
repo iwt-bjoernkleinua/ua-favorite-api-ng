@@ -1,0 +1,1 @@
+# ua-favorite-api-ng
