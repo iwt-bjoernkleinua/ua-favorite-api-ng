@@ -1,0 +1,53 @@
+{
+  "hosted-zone:account=429113693686:domainName=dev.umzugsauktion.de:region=eu-central-1": {
+    "Id": "/hostedzone/Z3DCOR3YZZYTVI",
+    "Name": "dev.umzugsauktion.de."
+  },
+  "vpc-provider:account=429113693686:filter.tag:Name=UaPortalDbStack/portal-db-vpc:region=eu-central-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-0c284d247dcc4e7ec",
+    "vpcCidrBlock": "10.10.9.0/24",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "PublcRdsSubnet",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-052bc2a0738073af8",
+            "cidr": "10.10.9.0/26",
+            "availabilityZone": "eu-central-1a",
+            "routeTableId": "rtb-0b348a937b55e02c5"
+          },
+          {
+            "subnetId": "subnet-00140e12c69a6f4ff",
+            "cidr": "10.10.9.64/26",
+            "availabilityZone": "eu-central-1b",
+            "routeTableId": "rtb-0e1e66e064afdcd5b"
+          }
+        ]
+      },
+      {
+        "name": "PrivateRDSSubnet",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-0a4bec32b61e3ad98",
+            "cidr": "10.10.9.128/26",
+            "availabilityZone": "eu-central-1a",
+            "routeTableId": "rtb-0d56a8f86657b797b"
+          },
+          {
+            "subnetId": "subnet-02066308e4de56dd9",
+            "cidr": "10.10.9.192/26",
+            "availabilityZone": "eu-central-1b",
+            "routeTableId": "rtb-0044dd13bb0f6cf40"
+          }
+        ]
+      }
+    ]
+  },
+  "security-group:account=429113693686:region=eu-central-1:securityGroupId=sg-00c5906dbb9bf3884": {
+    "securityGroupId": "sg-00c5906dbb9bf3884",
+    "allowAllOutbound": false
+  }
+}
