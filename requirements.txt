@@ -4,4 +4,4 @@ boto3
 botocore
 simplejson
 aws-cdk.aws-lambda-python-alpha
-
+pyjwt

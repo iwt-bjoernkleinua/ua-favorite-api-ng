@@ -55,9 +55,9 @@ class UaFavoriteApiNgStack(Stack):
             timeout=Duration.seconds(30),
             memory_size=self.memorySize,
             role=lambdaExecutionRole,
-            vpc=uaPortalVpc,
-            vpc_subnets=privateSubnets,
-            security_groups=[_ec2.SecurityGroup.from_lookup_by_id(scope=self,id="mySecGroup",security_group_id="sg-00c5906dbb9bf3884")]
+            #vpc=uaPortalVpc,
+            #vpc_subnets=privateSubnets,
+            #security_groups=[_ec2.SecurityGroup.from_lookup_by_id(scope=self,id="mySecGroup",security_group_id="sg-00c5906dbb9bf3884")]
         )
         
         corsPreflight = _apiGw.CorsOptions(

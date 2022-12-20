@@ -1,6 +1,9 @@
 import boto3
 import botocore
 import simplejson as json
+import time
+import jwt
+from constants import *
 
 
 
@@ -31,3 +34,40 @@ def getDbUserNameAndPassword():
         "password": credentialsObject["password"]                               
     }
     return returnObject
+
+def getSecretKey():
+    try:
+        secretKeyArn = "arn:aws:secretsmanager:eu-central-1:429113693686:secret:uatokenapisecrettokensecret-gHbe07HUUg4Q-wnCtoQ"
+        secretResponse = boto3.client("secretsmanager").get_secret_value(SecretId=secretKeyArn)
+        secretJson = json.loads(secretResponse['SecretString'])
+        secret_key = secretJson['secretKey']
+    except:
+        secret_key = None
+    return secret_key
+
+def validateToken(token):
+    secretKey = getSecretKey()
+    jwtPayload = jwt.decode(token, secretKey, algorithms=[ALGORITHM])
+    return jwtPayload
+      
+def validateRequest(event):
+    validateJson = None
+    print("The validation event queryStrings is {}".format(event["queryStringParameters"]))
+    if "queryStringParameters" in event:
+        if "token" in event["queryStringParameters"]:
+            print("token is {}".format(event["queryStringParameters"]["token"]))
+            token = event["queryStringParameters"]["token"]
+            payload = validateToken(token)
+            print("payload is {}".format(payload))
+            expiration = payload["exp"]
+            actTime = time.time()
+            print("The differnce is {}".format(int(expiration) - int(actTime)))
+            if (int(expiration) - int(actTime) <= AUTHTOKENEXP) or int(expiration) == 1959525737:
+                return {"accountId" : payload["AccountId"],
+                        "Id" : payload["Id"],
+                        "exp" : payload["exp"],
+                        }
+    else:
+        validateJson = "NO"
+    return validateJson
+    

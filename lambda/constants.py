@@ -17,3 +17,5 @@ CONTENT_TYPE = "Content-Type"
 PAYLOAD = 'Payload'
 REQUEST_CONTEXT = 'requestContext'
 AUTHORIZER = 'authorizer'
+ALGORITHM = 'HS256'
+AUTHTOKENEXP = 172800

@@ -37,7 +37,3 @@ def addFavorite(event):
         )
         
     return response
-
-        
-        
-    
