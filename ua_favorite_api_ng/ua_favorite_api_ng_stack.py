@@ -11,7 +11,7 @@ from aws_cdk import (
     aws_ec2 as _ec2
 )
 from constructs import Construct
-from ua_favorite_api_ng import rootDomain, memorySize
+from ua_favorite_api_ng import rootDomain, memorySize, secGroupId, vpcId
 
 class UaFavoriteApiNgStack(Stack):
     
@@ -39,7 +39,7 @@ class UaFavoriteApiNgStack(Stack):
             validation=_cm.CertificateValidation.from_dns(route53HostedZone)
         )
         
-        uaPortalVpc = _ec2.Vpc.from_lookup(self,id="vpc-0c284d247dcc4e7ec", vpc_name="UaPortalDbStack/portal-db-vpc")
+        uaPortalVpc = _ec2.Vpc.from_lookup(self,id=self.vpcId, vpc_name="UaPortalDbStack/portal-db-vpc")
         
         privateSubnets = _ec2.SubnetSelection(
                 subnets=uaPortalVpc.select_subnets(subnet_group_name="PrivateRDSSubnet").subnets
@@ -55,9 +55,9 @@ class UaFavoriteApiNgStack(Stack):
             timeout=Duration.seconds(30),
             memory_size=self.memorySize,
             role=lambdaExecutionRole,
-            #vpc=uaPortalVpc,
-            #vpc_subnets=privateSubnets,
-            #security_groups=[_ec2.SecurityGroup.from_lookup_by_id(scope=self,id="mySecGroup",security_group_id="sg-00c5906dbb9bf3884")]
+            vpc=uaPortalVpc,
+            vpc_subnets=privateSubnets,
+            security_groups=[_ec2.SecurityGroup.from_lookup_by_id(scope=self,id="mySecGroup",security_group_id=self.secGroupId)]
         )
         
         corsPreflight = _apiGw.CorsOptions(
@@ -133,6 +133,8 @@ class UaFavoriteApiNgStack(Stack):
         )
         self.memorySize = memorySize[stage]
         self.rootDomain = rootDomain[stage]
+        self.secGroupId = secGroupId[stage]
+        self.vpcId = vpcId[stage]
         self.record_name = self.stackPrefix
         self.dnsRecordName = "{}.{}".format(self.stackPrefix, rootDomain[stage])
         self.buildApiGateway()
