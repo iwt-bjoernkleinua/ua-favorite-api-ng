@@ -48,6 +48,7 @@ class UaFavoriteApiNgStack(Stack):
         favoriteHandler = _alambda.PythonFunction(
             self,
             "ua-favorite-handler-ng",
+            function_name="ua-favorite-handler-ng",
             runtime=_lambda.Runtime.PYTHON_3_9,
             entry="./lambda/",
             index="uaFavoriteApiEndpoint.py",
