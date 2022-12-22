@@ -11,7 +11,7 @@ memorySize = {
 }
 
 secGroupId = {
-    "dev": "sg-0ac5e2aed2cef587c",
+    "dev": "sg-0397d4e23a3788a8a",
     "preview": "sg-0c4a7a90573adb8a6",
     "live": "sg-0c4a7a90573adb8a6"   
 }
