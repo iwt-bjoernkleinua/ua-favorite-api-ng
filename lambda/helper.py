@@ -37,7 +37,7 @@ def getDbUserNameAndPassword():
 
 def getSecretKey():
     try:
-        secretKeyArn = "arn:aws:secretsmanager:eu-central-1:429113693686:secret:uatokenapisecrettokensecret-gHbe07HUUg4Q-wnCtoQ"
+        secretKeyArn = "arn:aws:secretsmanager:eu-central-1:823342781857:secret:uatokenapisecrettokensecret-a3LuOqPnG6pK-0iBDai"
         secretResponse = boto3.client("secretsmanager").get_secret_value(SecretId=secretKeyArn)
         secretJson = json.loads(secretResponse['SecretString'])
         secret_key = secretJson['secretKey']
@@ -55,19 +55,18 @@ def validateRequest(event):
     print("The validation event queryStrings is {}".format(event["queryStringParameters"]))
     if "queryStringParameters" in event:
         if "token" in event["queryStringParameters"]:
-            print("token is {}".format(event["queryStringParameters"]["token"]))
             token = event["queryStringParameters"]["token"]
             payload = validateToken(token)
             print("payload is {}".format(payload))
             expiration = payload["exp"]
             actTime = time.time()
-            print("The differnce is {}".format(int(expiration) - int(actTime)))
-            if (int(expiration) - int(actTime) <= AUTHTOKENEXP) or int(expiration) == 1959525737:
+            print("The exp is {}, the actTime is {}".format(int(expiration), int(actTime)))
+            if (int(expiration) >= int(actTime)):
                 return {"accountId" : payload["AccountId"],
                         "Id" : payload["Id"],
                         "exp" : payload["exp"],
                         }
     else:
-        validateJson = "NO"
+        validateJson = None
     return validateJson
     

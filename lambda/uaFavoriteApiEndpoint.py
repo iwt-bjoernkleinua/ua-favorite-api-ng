@@ -17,7 +17,7 @@ from helper import *
 
 def UaFavoriteApiNgEndpointHandler(event, context):
     if validateRequest(event) == None:
-        return HttpResponse.build_response(
+        return HttpResponse.buildResponse(
             status_code=501,
             body="Access Denied"
         )
