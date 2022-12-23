@@ -38,7 +38,7 @@ def getDbUserNameAndPassword():
 def getSecretKey():
     try:
         secretKeyArn = "arn:aws:secretsmanager:eu-central-1:823342781857:secret:uatokenapisecrettokensecret-a3LuOqPnG6pK-0iBDai"
-        secretResponse = boto3.client("secretsmanager").get_secret_value(SecretId=secretKeyArn)
+        secretResponse = boto3.client("secretsmanager").get_secret_value(SecretId="uatokenapisecrettokensecret-gHbe07HUUg4Q")
         secretJson = json.loads(secretResponse['SecretString'])
         secret_key = secretJson['secretKey']
     except:
@@ -47,6 +47,7 @@ def getSecretKey():
 
 def validateToken(token):
     secretKey = getSecretKey()
+    print("secretkey is {}".format(secretKey))
     jwtPayload = jwt.decode(token, secretKey, algorithms=[ALGORITHM])
     return jwtPayload
       
