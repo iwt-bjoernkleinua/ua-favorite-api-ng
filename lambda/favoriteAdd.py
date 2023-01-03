@@ -16,15 +16,12 @@ def addFavorite(event):
         db = pymysql.connect(host=credentials["host"], user=credentials["username"], passwd=credentials["password"], database=credentials["dbname"])
         cursor = db.cursor()      
         sql = "SELECT `accountId`, `relocationId` from `Favorites` WHERE `accountId` = %s and  `relocationId` = %s"
-        print("I am here")
         result = cursor.execute(sql, (accountId, relocationId))
-        print("Result is {}".format(result))
 
         if result == 0:
             sql = "INSERT INTO `Favorites` (`accountId`, `relocationId`) VALUES (%s, %s)"
             result = cursor.execute(sql,(accountId, relocationId))
             db.commit()
-            print("I set it to favorites")
             
         response = HttpResponse.buildJsonResponse(
             status_code=200,

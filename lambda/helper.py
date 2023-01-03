@@ -47,26 +47,21 @@ def getSecretKey():
 
 def validateToken(token):
     secretKey = getSecretKey()
-    print("secretkey is {}".format(secretKey))
     jwtPayload = jwt.decode(token, secretKey, algorithms=[ALGORITHM])
     return jwtPayload
       
 def validateRequest(event):
     validateJson = None
     token = None
-    print("The validation event queryStrings is {}".format(event["queryStringParameters"]))
     if "queryStringParameters" in event:
         if "token" in event["queryStringParameters"]:
             token = event["queryStringParameters"]["token"]
     if ("Authorization" in event["headers"]) and (token == None):
-        print("The header is {}".format(event["headers"]["Authorization"]))
         token = event["headers"]["Authorization"]
     if token != None:
         payload = validateToken(token)
-        print("payload is {}".format(payload))
         expiration = payload["exp"]
         actTime = time.time()
-        print("The exp is {}, the actTime is {}".format(int(expiration), int(actTime)))
         if (int(expiration) >= int(actTime)):
             if "AccountId" in payload: 
                 return {"accountId" : payload["AccountId"],

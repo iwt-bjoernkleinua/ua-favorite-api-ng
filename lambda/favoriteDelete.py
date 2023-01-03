@@ -15,10 +15,8 @@ def deleteFavorite(event):
         db = pymysql.connect(host=credentials["host"], user=credentials["username"], passwd=credentials["password"], database=credentials["dbname"])
         cursor = db.cursor()      
         sql = "DELETE FROM `Favorites`  WHERE `accountId` = %s and  `relocationId` = %s"
-        print("I am here")
         result = cursor.execute(sql, (accountId, relocationId))
         db.commit()
-        print("Result is {}".format(result))
            
         response = HttpResponse.buildJsonResponse(
             status_code=200,
